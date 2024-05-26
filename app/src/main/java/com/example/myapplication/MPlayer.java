@@ -1,11 +1,15 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.PowerManager;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 class OCL implements MediaPlayer.OnCompletionListener {
 
@@ -17,13 +21,18 @@ class OCL implements MediaPlayer.OnCompletionListener {
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if (this.Mpl.nextFile()) {
+        TextView tv = (TextView)Mpl.ma.listView.getChildAt(Mpl.currentIndex);
+        tv.setTypeface(Typeface.DEFAULT);
+        mp.release();
+        this.Mpl.nextFile();
+        if (this.Mpl.currentIndex==0 && this.Mpl.isLooped) {
             try {
                 this.Mpl.beginPlaying();
-                this.Mpl.ma.setPlayingFile(this.Mpl.getCurrentFile());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            } catch (Exception e) {}
+        } else if(this.Mpl.currentIndex==0) {
+            this.Mpl.isprepared = false;
+            this.Mpl.ma.PPButton.setImageResource(R.drawable.play);
+            this.Mpl.ma.isPaused=false;
         }
     }
 }
@@ -35,12 +44,15 @@ public class MPlayer {
     public MainActivity ma;
 
     private MediaPlayer mp;
-    private boolean isLooped;
+    public boolean isLooped;
     private ArrayList<String> files;
     private String currentFile;
-    private int currentIndex;
+    public int currentIndex;
     private OCL ocl;
 
+    boolean isprepared;
+
+    public Map<String, Integer> m;
 
     public MPlayer(Context context, MainActivity ma) {
         this.isLooped = true;
@@ -48,10 +60,24 @@ public class MPlayer {
         this.ocl = new OCL(this);
         this.context = context;
         this.ma = ma;
+        this.currentIndex=0;
+        isprepared = false;
+        m = new HashMap<String, Integer>()
+        {
+            {
+                put("Idle browsing", R.raw.idlebrowsing);
+                put("Alderheim", R.raw.aldrheim);
+            }
+        };
     }
 
     public void stopPlaying() {
+        TextView tv = (TextView)ma.listView.getChildAt(currentIndex);
+        tv.setTypeface(Typeface.DEFAULT);
         mp.stop();
+        mp.release();
+        mp = null;
+        isprepared = false;
     }
 
     public String getCurrentFile() {return this.currentFile;}
@@ -62,14 +88,17 @@ public class MPlayer {
 
     public void setCurrentIndex(int index) {
         this.currentIndex = index;
+        updateDataSource();
     }
 
     public void changeLoopingState() {
         this.isLooped = !this.isLooped;
     }
 
-    public boolean getLoopingState() {
-        return this.isLooped;
+    public int getCurrentTime() {return mp.getCurrentPosition()/1000;}
+
+    public void goTo(int pos) {
+        mp.seekTo(pos*1000);
     }
 
     public void addFile(String file) {
@@ -92,31 +121,27 @@ public class MPlayer {
         return files;
     }
 
-    public boolean nextFile() {
+    public void nextFile() {
         try {
+            TextView tv = (TextView)ma.listView.getChildAt(currentIndex);
+            tv.setTypeface(Typeface.DEFAULT);
             this.currentIndex++;
             if (this.currentIndex >= this.files.size()) {
                 this.currentIndex = 0;
-                this.updateDataSource();
-                if (this.isLooped) {
-                    return true;
-                } else {
-                    return false;
-                }
             }
             this.updateDataSource();
-            return true;
         } catch (Exception e) {}
-        return false;
     }
 
     public void previousFile() {
         try {
+            TextView tv = (TextView)ma.listView.getChildAt(currentIndex);
+            tv.setTypeface(Typeface.DEFAULT);
             this.currentIndex--;
             if (this.currentIndex < 0) {
                 this.currentIndex = this.files.size() - 1;
-                this.updateDataSource();
             }
+            this.updateDataSource();
         } catch (Exception e) {}
     }
 
@@ -124,14 +149,15 @@ public class MPlayer {
         this.currentFile=this.files.get(this.currentIndex);
     }
 
-    public void updateDataSource(String file) {
-        this.currentFile=file;
-    }
-
     public void beginPlaying() throws Exception {
-        mp.setDataSource(currentFile);
+        TextView tv = (TextView)ma.listView.getChildAt(currentIndex);
+        tv.setTypeface(Typeface.DEFAULT_BOLD);
+        mp = MediaPlayer.create(context, m.get(currentFile));
+        ma.totalTime.setText(Integer.toString(mp.getDuration()/1000));
+        ma.playProgressBar.setMax(mp.getDuration()/1000);
         mp.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         mp.start();
         mp.setOnCompletionListener(this.ocl);
+        isprepared = true;
     }
 }
