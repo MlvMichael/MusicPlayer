@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="395dp"
+        android:layout_height="458dp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/fileViewerButton"
+        android:layout_width="189dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="4dp"
+        android:text="Просмотреть файлы"
+        android:textColorLink="#E607FF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/PPButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/previousFileButton"
+        app:srcCompat="@drawable/play" />
+
+    <SeekBar
+        android:id="@+id/playProgressBar"
+        android:layout_width="401dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="-6dp"
+        android:layout_marginBottom="88dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/removeButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/add" />
+
+    <ImageButton
+        android:id="@+id/removeButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toEndOf="@+id/choosenFileView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/remove" />
+
+    <ImageButton
+        android:id="@+id/previousFileButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="-4dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/previousfile" />
+
+    <ImageButton
+        android:id="@+id/nextFileButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/PPButton"
+        app:srcCompat="@drawable/nextfile" />
+
+    <ImageButton
+        android:id="@+id/loopingButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/nextFileButton"
+        app:srcCompat="@drawable/looped" />
+
+    <ImageButton
+        android:id="@+id/beginStopButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/loopingButton"
+        app:srcCompat="@drawable/begin" />
+
+    <TextView
+        android:id="@+id/pathfileView"
+        android:layout_width="226dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="4dp"
+        android:text="здесь будет отображаться проигрываемый файл/путь до текущей папки"
+        app:layout_constraintStart_toStartOf="@+id/fileViewerButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/choosenFileView"
+        android:layout_width="136dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="60dp"
+        android:text="здесь будет отображаться выбранный файл"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/previousDirectoryButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/addButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/previousdirectory" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
