@@ -32,7 +32,11 @@ class OCL implements MediaPlayer.OnCompletionListener {
         } else if(this.Mpl.currentIndex==0) {
             this.Mpl.isprepared = false;
             this.Mpl.ma.PPButton.setImageResource(R.drawable.play);
-            this.Mpl.ma.isPaused=false;
+            this.Mpl.ma.isPaused = false;
+        } else {
+            try {
+                this.Mpl.beginPlaying();
+            } catch (Exception e) {}
         }
     }
 }
@@ -129,8 +133,9 @@ public class MPlayer {
             if (this.currentIndex >= this.files.size()) {
                 this.currentIndex = 0;
             }
+            System.out.println("Current index: "+this.currentIndex);
             this.updateDataSource();
-        } catch (Exception e) {}
+        } catch (Exception e) {System.out.println(e);}
     }
 
     public void previousFile() {
